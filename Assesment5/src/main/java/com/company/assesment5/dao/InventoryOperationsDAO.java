@@ -4,10 +4,10 @@ import com.company.assesment5.dto.InventoryItemDTO;
 
 import java.util.List;
 
-public interface InventoryOperations {
+public interface InventoryOperationsDAO {
 
     //read database
-public List<InventoryItemDTO> getItemList () throws Exception;
+public List<InventoryItemDTO> getItemList () throws ExceptionClassNotFound;
 
 public void create(String itemName, double costPrice, double sellingPrice);
 

@@ -1,6 +1,6 @@
 package com.company.assesment5;
 
-import com.company.assesment5.dao.InventoryOperationsImp;
+import com.company.assesment5.dao.InventoryOperationsDAOImpl;
 import com.company.assesment5.dto.InventoryItemDTO;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,14 +17,14 @@ public class InventoryTest {
         private double costPrice;
         private double sellPrice;
         private int quantity;
-        InventoryOperationsImp inventoryOperationsImp;
+        InventoryOperationsDAOImpl inventoryOperationsImp;
 
         InventoryItemDTO dtoList;
 
         @Before //Executed before each test. It is used to prepare the test environment
         public void setUp() {
             System.out.println("Inside @Before");
-            inventoryOperationsImp = new InventoryOperationsImp();
+            inventoryOperationsImp = new InventoryOperationsDAOImpl();
             itemName = "BOOK01";
             costPrice = 10.50;
             sellPrice = 13.00;

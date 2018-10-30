@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryOperationsImp implements InventoryOperations {
+public class InventoryOperationsDAOImpl implements InventoryOperationsDAO {
 
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String DB_URL = "jdbc:mysql://localhost:3306/inventory?allowPublicKeyRetrieval=true&useSSL=false";
@@ -37,9 +37,9 @@ public class InventoryOperationsImp implements InventoryOperations {
             String sql;
             sql = "SELECT * FROM inventory.inventory_table;";
             System.out.println(sql);
-            System.out.println(sql);
             ResultSet rs = statement.executeQuery(sql);
 
+            System.out.println(" Item Name: " + "\t" + " Bought At: " + "\t" + " Sold At: " + "\t" + " AvailableQty: "+ "\t\t" + " Value: ");
             //STEP 5: Extract data from result set
             while(rs.next()){
                 //Retrieve by column name
@@ -51,7 +51,7 @@ public class InventoryOperationsImp implements InventoryOperations {
                 InventoryItemDTO inventoryItemDTO = new InventoryItemDTO(id, item_name, cost_price, selling_price, quantity);
                 itemList.add(inventoryItemDTO);
                 //Display values
-                System.out.println("Id: " + id +", Name: " + item_name+ ", Cost Price: " + cost_price + ", Selling Price: " + selling_price+", Quantity: " +quantity);
+                //System.out.println(inventoryItemDTO.toString());
             }
             //STEP 6: Clean-up environment
             rs.close();
@@ -127,15 +127,15 @@ public class InventoryOperationsImp implements InventoryOperations {
 
     public void delete(String itemName) throws Exception {
 
-        for (int i=0; i<itemList.size(); i++) {
-
-            if(itemList.get(i).getItem_name().equalsIgnoreCase(itemName)){
-                profit =profit + (itemList.get(i).getSelling_price()-itemList.get(i).getCost_price())
-                        * itemList.get(i).getAvailable_qty();
-            }else{
-                throw new Exception("Item not found" +itemName);
-            }
-        }
+//        for (int i=0; i<itemList.size(); i++) {
+//
+//            if(itemList.get(i).getItem_name().equalsIgnoreCase(itemName)){
+//                profit =profit + (itemList.get(i).getSelling_price()-itemList.get(i).getCost_price())
+//                        * itemList.get(i).getAvailable_qty();
+//            }else{
+//                throw new Exception("Item not found" +itemName);
+//            }
+//        }
 
         try{
             //STEP 2: Register JDBC driver
@@ -150,8 +150,6 @@ public class InventoryOperationsImp implements InventoryOperations {
             String sql;
             sql = "DELETE FROM inventory.inventory_table \n" +
                     "WHERE item_name ='"+itemName+"';";
-            System.out.println(sql);
-
             System.out.println(sql);
             statement.executeUpdate(sql);
 
@@ -192,7 +190,7 @@ public class InventoryOperationsImp implements InventoryOperations {
 
             String sql;
             sql = "UPDATE inventory.inventory_table \n" +
-                    "SET quantity = "+quantity+" WHERE item_name Like '"+itemName+"';";
+                    "SET quantity = quantity + "+quantity+" WHERE item_name Like '"+itemName+"';";
 
             System.out.println(sql);
             statement.executeUpdate(sql);
@@ -245,7 +243,7 @@ public class InventoryOperationsImp implements InventoryOperations {
 
             String sql;
             sql = "UPDATE inventory.inventory_table \n" +
-                    "SET quantity = "+quantity+" WHERE item_name Like '"+itemName+"';";
+                    "SET quantity = quantity - "+quantity+" WHERE item_name Like '"+itemName+"';";
             System.out.println(sql);
             statement.executeUpdate(sql);
 
@@ -275,11 +273,13 @@ public class InventoryOperationsImp implements InventoryOperations {
 
     public void report() {
 
+        getItemList();
+
         double total_value = 0;
-        System.out.println("********REPORT***********");
+
         for (InventoryItemDTO item:itemList) {
             double value = item.getCost_price() * item.getAvailable_qty();
-            System.out.println(item.toString()+" value" +value);
+            System.out.println(item.toString()+" \t\t" +value);
             total_value = total_value + value;
         }
 

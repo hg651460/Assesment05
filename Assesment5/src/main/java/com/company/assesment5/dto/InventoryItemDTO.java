@@ -60,12 +60,6 @@ public class InventoryItemDTO {
 
     @Override
     public String toString() {
-        return "InventoryItemDTO{" +
-                "id=" + id +
-                ", item_name='" + item_name + '\'' +
-                ", cost_price=" + cost_price +
-                ", selling_price=" + selling_price +
-                ", available_qty=" + available_qty +
-                '}';
+        return   "\t"+item_name + "\t\t\t" + cost_price + "\t\t\t" + selling_price +"\t\t\t" + available_qty ;
     }
 }
